@@ -1,0 +1,6 @@
+[submodule "HammingECC"]
+	path = HammingECC
+	url = https://github.com/lautaroem1/HammingECC.git
+[submodule "HuffmanCompression"]
+	path = HuffmanCompression
+	url = https://github.com/lautaroem1/HuffmanCompression.git
