@@ -51,7 +51,7 @@
       <HBox alignment="CENTER_LEFT" spacing="50.0" VBox.vgrow="NEVER">
          <children>
             <ChoiceBox fx:id="protectionSettingsChoiceBox" prefWidth="150.0" />
-            <ChoiceBox fx:id="protectionSettingsLevelsChoiceBox" prefWidth="150.0" />
+            <ChoiceBox fx:id="protectionLevelsChoiceBox" prefWidth="150.0" />
             <CheckBox fx:id="protectionCustomSetting" mnemonicParsing="false" text="CustomSetting" />
          </children>
       </HBox>

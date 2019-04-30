@@ -1,5 +1,10 @@
 package app.controller;
 
+import app.model.ApplicationExecutionSettings;
+import app.model.CompressionSettings;
+import app.model.ProtectionCustomSetting;
+import app.model.ProtectionSettings;
+import app.service.TaskManager;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -17,6 +22,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 public class MainController implements Initializable {
+    private LinkedHashMap<String, Integer> protectionLevelsOptions;
     private final String protectionAddRandomError = "Add Random Error";
     private final String protectionCorrectErrors = "Correct Errors";
 
@@ -30,13 +36,14 @@ public class MainController implements Initializable {
     private ChoiceBox<String> protectionSettingsChoiceBox;
 
     @FXML
-    private ChoiceBox<String> protectionSettingsLevelsChoiceBox;
+    private ChoiceBox<String> protectionLevelsChoiceBox;
 
     @FXML
     private CheckBox protectionCustomSetting;
 
     @FXML
     private ChoiceBox<String> compressionSettingsChoiceBox;
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -49,6 +56,26 @@ public class MainController implements Initializable {
     @FXML
     private void runApplication() {
         System.out.println("Running app...");
+
+        ApplicationExecutionSettings settings = new ApplicationExecutionSettings(
+                sourcePathTextField.getText(),
+                outputPathTextField.getText(),
+                ProtectionSettings.fromString(
+                        protectionSettingsChoiceBox.getValue()
+                ),
+                getProtectionLevel(),
+                getProtectionCustomSetting(),
+                CompressionSettings.fromString(
+                        compressionSettingsChoiceBox.getValue()
+                )
+        );
+
+        try {
+            String result = TaskManager.runApplicationWithSettings(settings);
+            System.out.println(result);
+        } catch (Error error) {
+            System.out.println(error.getMessage());
+        }
     }
 
     @FXML
@@ -113,12 +140,12 @@ public class MainController implements Initializable {
     }
 
     private void enableProtectionSettingsVisibility(boolean value) {
-        protectionSettingsLevelsChoiceBox.setDisable(!value);
+        protectionLevelsChoiceBox.setDisable(!value);
         protectionCustomSetting.setDisable(!value);
     }
 
     private void setProtectionLevelOptions() {
-        LinkedHashMap<String, Integer> protectionSettingLevelsOptions = new LinkedHashMap<String, Integer>() {
+        protectionLevelsOptions = new LinkedHashMap<String, Integer>() {
             {
                 put("Extreme (7)", 7);
                 put("High (32)", 32);
@@ -126,10 +153,10 @@ public class MainController implements Initializable {
                 put("Low (32768)", 32768);
             }
         };
-        protectionSettingsLevelsChoiceBox.setItems(
-                FXCollections.observableArrayList(protectionSettingLevelsOptions.keySet())
+        protectionLevelsChoiceBox.setItems(
+                FXCollections.observableArrayList(protectionLevelsOptions.keySet())
         );
-        protectionSettingsLevelsChoiceBox.getSelectionModel().selectFirst();
+        protectionLevelsChoiceBox.getSelectionModel().selectFirst();
     }
 
     private void setProtectionDefaultCustomSetting() {
@@ -150,4 +177,18 @@ public class MainController implements Initializable {
         compressionSettingsChoiceBox.getSelectionModel().selectFirst();
     }
 
+    private int getProtectionLevel() {
+        String selectedValue = protectionLevelsChoiceBox.getValue();
+        return protectionLevelsOptions.get(selectedValue);
+    }
+
+    private ProtectionCustomSetting getProtectionCustomSetting() {
+        if (protectionCustomSetting.isSelected()) {
+            return ProtectionCustomSetting.fromString(
+                    protectionCustomSetting.getText()
+            );
+        } else {
+            return ProtectionCustomSetting.NOTHING;
+        }
+    }
 }
