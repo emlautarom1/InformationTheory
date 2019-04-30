@@ -3,19 +3,17 @@ package app.controller;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
 
 import java.net.URL;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.ResourceBundle;
 
 public class MainController implements Initializable {
-    private LinkedHashMap<String, Integer> protectionSettingLevelsOptions;
-    private List<String> protectionSettingsOptions;
-    private List<String> compressionSettingsOptions;
-
     private final String protectionAddRandomError = "Add Random Error";
     private final String protectionCorrectErrors = "Correct Errors";
 
@@ -23,13 +21,7 @@ public class MainController implements Initializable {
     private TextField sourcePathTextField;
 
     @FXML
-    private Button sourcePathChooseButton;
-
-    @FXML
     private TextField outputPathTextField;
-
-    @FXML
-    private Button outputPathChooseButton;
 
     @FXML
     private ChoiceBox<String> protectionSettingsChoiceBox;
@@ -43,8 +35,6 @@ public class MainController implements Initializable {
     @FXML
     private ChoiceBox<String> compressionSettingsChoiceBox;
 
-    @FXML
-    private Button runApplicationButton;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -60,7 +50,7 @@ public class MainController implements Initializable {
     }
 
     private void setProtectionSettingsOptions() {
-        protectionSettingsOptions = new ArrayList<String>() {
+        List<String> protectionSettingsOptions = new ArrayList<String>() {
             {
                 add("Nothing");
                 add("Protect");
@@ -101,7 +91,7 @@ public class MainController implements Initializable {
     }
 
     private void setProtectionLevelOptions() {
-        protectionSettingLevelsOptions = new LinkedHashMap<String, Integer>() {
+        LinkedHashMap<String, Integer> protectionSettingLevelsOptions = new LinkedHashMap<String, Integer>() {
             {
                 put("Extreme (7)", 7);
                 put("High (32)", 32);
@@ -120,7 +110,7 @@ public class MainController implements Initializable {
     }
 
     private void setCompressionSettingsOptions() {
-        compressionSettingsOptions = new ArrayList<String>() {
+        List<String> compressionSettingsOptions = new ArrayList<String>() {
             {
                 add("Nothing");
                 add("Compress");

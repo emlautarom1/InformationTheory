@@ -25,27 +25,30 @@
             </ImageView>
          </children>
          <padding>
-            <Insets bottom="10.0" left="10.0" right="10.0" />
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
          </padding>
+         <VBox.margin>
+            <Insets />
+         </VBox.margin>
       </AnchorPane>
       <Separator prefWidth="200.0" />
       <HBox spacing="20.0" VBox.vgrow="NEVER">
          <children>
             <Label minWidth="-Infinity" prefWidth="80.0" text="Source File:" />
             <TextField fx:id="sourcePathTextField" maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS" />
-            <Button fx:id="sourcePathChooseButton" mnemonicParsing="false" text="Choose" />
+            <Button mnemonicParsing="false" text="Choose" />
          </children>
       </HBox>
       <HBox layoutX="20.0" layoutY="132.0" spacing="20.0">
          <children>
             <Label minWidth="-Infinity" prefWidth="80.0" text="Output File:" />
             <TextField fx:id="outputPathTextField" maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS" />
-            <Button fx:id="outputPathChooseButton" mnemonicParsing="false" text="Choose" />
+            <Button mnemonicParsing="false" text="Choose" />
          </children>
       </HBox>
       <Separator prefWidth="200.0" />
       <Label text="Protection Settings:" />
-      <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="50.0" VBox.vgrow="NEVER">
+      <HBox alignment="CENTER_LEFT" spacing="50.0" VBox.vgrow="NEVER">
          <children>
             <ChoiceBox fx:id="protectionSettingsChoiceBox" prefWidth="150.0" />
             <ChoiceBox fx:id="protectionSettingsLevelsChoiceBox" prefWidth="150.0" />
@@ -53,15 +56,15 @@
          </children>
       </HBox>
       <Separator layoutX="20.0" layoutY="222.0" prefWidth="200.0" />
-      <Label text="Compression Settings:" />
-      <HBox alignment="CENTER_LEFT" layoutX="20.0" layoutY="282.0" prefHeight="100.0" prefWidth="200.0" spacing="50.0">
+      <Label text="Compression Settings:" VBox.vgrow="NEVER" />
+      <HBox alignment="CENTER_LEFT" spacing="50.0" VBox.vgrow="NEVER">
          <children>
             <ChoiceBox fx:id="compressionSettingsChoiceBox" prefWidth="150.0" />
          </children>
       </HBox>
       <AnchorPane prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
          <children>
-            <Button fx:id="runApplicationButton" defaultButton="true" mnemonicParsing="false" onAction="#runApplication" prefWidth="115.0" text="Run" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+            <Button defaultButton="true" mnemonicParsing="false" onAction="#runApplication" prefWidth="115.0" text="Run" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" />
          </children>
       </AnchorPane>
    </children>
