@@ -36,14 +36,14 @@
          <children>
             <Label minWidth="-Infinity" prefWidth="80.0" text="Source File:" />
             <TextField fx:id="sourcePathTextField" maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS" />
-            <Button mnemonicParsing="false" text="Choose" />
+            <Button mnemonicParsing="false" onAction="#setSourcePath" text="Choose" />
          </children>
       </HBox>
       <HBox layoutX="20.0" layoutY="132.0" spacing="20.0">
          <children>
             <Label minWidth="-Infinity" prefWidth="80.0" text="Output File:" />
             <TextField fx:id="outputPathTextField" maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS" />
-            <Button mnemonicParsing="false" text="Choose" />
+            <Button mnemonicParsing="false" onAction="#setOutputPath" text="Choose" />
          </children>
       </HBox>
       <Separator prefWidth="200.0" />

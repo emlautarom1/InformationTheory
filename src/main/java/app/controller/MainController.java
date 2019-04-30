@@ -6,7 +6,10 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 
+import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -35,7 +38,6 @@ public class MainController implements Initializable {
     @FXML
     private ChoiceBox<String> compressionSettingsChoiceBox;
 
-
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         setProtectionSettingsOptions();
@@ -47,6 +49,31 @@ public class MainController implements Initializable {
     @FXML
     private void runApplication() {
         System.out.println("Running app...");
+    }
+
+    @FXML
+    private void setSourcePath() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Open File");
+        File file = fileChooser.showOpenDialog(new Stage());
+        if (file != null) {
+            sourcePathTextField.setText(file.getAbsolutePath());
+        }
+    }
+
+    @FXML
+    private void setOutputPath() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Save as");
+        fileChooser.getExtensionFilters().add(
+                new FileChooser.ExtensionFilter(
+                        "Information Theory File (.ift)", ".ift"
+                )
+        );
+        File file = fileChooser.showSaveDialog(new Stage());
+        if (file != null) {
+            outputPathTextField.setText(file.getAbsolutePath());
+        }
     }
 
     private void setProtectionSettingsOptions() {
