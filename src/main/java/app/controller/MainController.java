@@ -44,7 +44,6 @@ public class MainController implements Initializable {
     @FXML
     private VBox protectionAdvancedSettingsContainer;
 
-
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         setOperations();
@@ -54,8 +53,6 @@ public class MainController implements Initializable {
 
     @FXML
     private void runApplication() {
-        System.out.println("Running app...");
-
         ApplicationExecutionSettings settings = new ApplicationExecutionSettings(
                 sourcePathTextField.getText(),
                 outputPathTextField.getText(),
