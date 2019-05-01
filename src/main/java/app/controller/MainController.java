@@ -64,10 +64,10 @@ public class MainController implements Initializable {
                 getProtectionCustomSetting()
         );
         try {
-            String result = TaskManager.runApplicationWithSettings(settings);
-            System.out.println(result);
+            long elapsedTime = TaskManager.runApplicationWithSettings(settings);
+            displaySucces(elapsedTime);
         } catch (Error error) {
-            System.out.println(error.getMessage());
+            displayError(error);
         }
     }
 
@@ -85,11 +85,6 @@ public class MainController implements Initializable {
     private void setOutputPath() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Save as");
-        fileChooser.getExtensionFilters().add(
-                new FileChooser.ExtensionFilter(
-                        "Information Theory File (.ift)", ".ift"
-                )
-        );
         File file = fileChooser.showSaveDialog(new Stage());
         if (file != null) {
             outputPathTextField.setText(file.getAbsolutePath());
@@ -169,5 +164,14 @@ public class MainController implements Initializable {
         } else {
             return ProtectionCustomSetting.NOTHING;
         }
+    }
+
+    private void displaySucces(long elapsedTime) {
+        System.out.println("Operation(s) finished successfully in " + elapsedTime + " ms");
+    }
+
+    private void displayError(Error error) {
+        System.out.println("Error found!: ");
+        System.out.println(error.getMessage());
     }
 }
