@@ -1,9 +1,8 @@
 package app.controller;
 
 import app.model.ApplicationExecutionSettings;
-import app.model.CompressionSettings;
+import app.model.Operations;
 import app.model.ProtectionCustomSetting;
-import app.model.ProtectionSettings;
 import app.service.TaskManager;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
@@ -11,14 +10,13 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.File;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.ResourceBundle;
 
 public class MainController implements Initializable {
@@ -32,8 +30,6 @@ public class MainController implements Initializable {
     @FXML
     private TextField outputPathTextField;
 
-    @FXML
-    private ChoiceBox<String> protectionSettingsChoiceBox;
 
     @FXML
     private ChoiceBox<String> protectionLevelsChoiceBox;
@@ -41,16 +37,19 @@ public class MainController implements Initializable {
     @FXML
     private CheckBox protectionCustomSetting;
 
+
     @FXML
-    private ChoiceBox<String> compressionSettingsChoiceBox;
+    private ChoiceBox<String> operationsChoiceBox;
+
+    @FXML
+    private VBox protectionAdvancedSettingsContainer;
 
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        setProtectionSettingsOptions();
+        setOperations();
         setProtectionLevelOptions();
         setProtectionDefaultCustomSetting();
-        setCompressionSettingsOptions();
     }
 
     @FXML
@@ -60,16 +59,10 @@ public class MainController implements Initializable {
         ApplicationExecutionSettings settings = new ApplicationExecutionSettings(
                 sourcePathTextField.getText(),
                 outputPathTextField.getText(),
-                ProtectionSettings.fromString(
-                        protectionSettingsChoiceBox.getValue()
-                ),
+                getOperations(),
                 getProtectionLevel(),
-                getProtectionCustomSetting(),
-                CompressionSettings.fromString(
-                        compressionSettingsChoiceBox.getValue()
-                )
+                getProtectionCustomSetting()
         );
-
         try {
             String result = TaskManager.runApplicationWithSettings(settings);
             System.out.println(result);
@@ -103,45 +96,40 @@ public class MainController implements Initializable {
         }
     }
 
-    private void setProtectionSettingsOptions() {
-        List<String> protectionSettingsOptions = new ArrayList<String>() {
-            {
-                add("Nothing");
-                add("Protect");
-                add("Unlock");
-            }
-        };
-        protectionSettingsChoiceBox.setItems(
-                FXCollections.observableArrayList(protectionSettingsOptions)
+    private void setOperations() {
+        operationsChoiceBox.setItems(
+                FXCollections.observableArrayList(
+                        "Protect",
+                        "Unlock",
+                        "Compress",
+                        "Decompress",
+                        "Protect & Compress",
+                        "Unlock & Decompress"
+                )
         );
-        protectionSettingsChoiceBox.getSelectionModel().selectFirst();
-        // Disable custom parameters
-        enableProtectionSettingsVisibility(false);
-        protectionSettingsChoiceBox
-                .getSelectionModel()
-                .selectedItemProperty()
-                .addListener((obs, old, newValue) -> {
-                    switch (newValue) {
-                        case "Nothing":
-                            enableProtectionSettingsVisibility(false);
-                            break;
-                        case "Protect":
-                            enableProtectionSettingsVisibility(true);
+        operationsChoiceBox.getSelectionModel().selectFirst();
+        // Handles the Protection Settings display on Operation change
+        operationsChoiceBox.getSelectionModel().selectedItemProperty().addListener(
+                (obs, old, newValue) -> {
+                    Operations op = Operations.fromString(newValue);
+                    switch (op) {
+                        case PROTECT:
+                        case PROTECT_AND_COMPRESS:
+                            protectionAdvancedSettingsContainer.setVisible(true);
                             protectionCustomSetting.setText(protectionAddRandomError);
-                            protectionCustomSetting.setSelected(false);
                             break;
-                        case "Unlock":
-                            enableProtectionSettingsVisibility(true);
+                        case UNLOCK:
+                        case UNLOCK_AND_DECOMPRESS:
+                            protectionAdvancedSettingsContainer.setVisible(true);
                             protectionCustomSetting.setText(protectionCorrectErrors);
-                            protectionCustomSetting.setSelected(false);
+                            break;
+                        case COMPRESS:
+                        case DECOMPRESS:
+                            protectionAdvancedSettingsContainer.setVisible(false);
                             break;
                     }
-                });
-    }
-
-    private void enableProtectionSettingsVisibility(boolean value) {
-        protectionLevelsChoiceBox.setDisable(!value);
-        protectionCustomSetting.setDisable(!value);
+                }
+        );
     }
 
     private void setProtectionLevelOptions() {
@@ -163,18 +151,9 @@ public class MainController implements Initializable {
         protectionCustomSetting.setText(protectionAddRandomError);
     }
 
-    private void setCompressionSettingsOptions() {
-        List<String> compressionSettingsOptions = new ArrayList<String>() {
-            {
-                add("Nothing");
-                add("Compress");
-                add("Decompress");
-            }
-        };
-        compressionSettingsChoiceBox.setItems(
-                FXCollections.observableArrayList(compressionSettingsOptions)
-        );
-        compressionSettingsChoiceBox.getSelectionModel().selectFirst();
+    private Operations getOperations() {
+        String selectedValue = operationsChoiceBox.getValue();
+        return Operations.fromString(selectedValue);
     }
 
     private int getProtectionLevel() {
