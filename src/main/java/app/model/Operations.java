@@ -37,9 +37,8 @@ public enum Operations {
                 return "DECOMPRESS";
             case PROTECT_AND_COMPRESS:
                 return "PROTECT AND COMPRESS";
-            case UNLOCK_AND_DECOMPRESS:
+            default:
                 return "UNLOCK AND DECOMPRESS";
         }
-        return null;
     }
 }

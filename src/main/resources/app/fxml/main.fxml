@@ -17,7 +17,7 @@
    <children>
       <AnchorPane VBox.vgrow="NEVER">
          <children>
-            <Button layoutX="475.0" layoutY="22.0" mnemonicParsing="false" prefWidth="115.0" text="About" AnchorPane.rightAnchor="0.0" />
+            <Button contentDisplay="RIGHT" layoutX="475.0" layoutY="22.0" mnemonicParsing="false" prefWidth="115.0" text="About" AnchorPane.rightAnchor="0.0" />
             <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
                <image>
                   <Image url="@../img/unsl_logo.png" />
@@ -36,14 +36,28 @@
          <children>
             <Label minWidth="-Infinity" prefWidth="80.0" text="Source File:" />
             <TextField fx:id="sourcePathTextField" maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS" />
-            <Button mnemonicParsing="false" onAction="#setSourcePath" text="Choose" />
+            <Button mnemonicParsing="false" onAction="#setSourcePath">
+               <graphic>
+                  <ImageView fitHeight="30.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../icon/folder.png" />
+                     </image>
+                  </ImageView>
+               </graphic></Button>
          </children>
       </HBox>
       <HBox layoutX="20.0" layoutY="132.0" spacing="20.0">
          <children>
             <Label minWidth="-Infinity" prefWidth="80.0" text="Output File:" />
             <TextField fx:id="outputPathTextField" maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS" />
-            <Button mnemonicParsing="false" onAction="#setOutputPath" text="Choose" />
+            <Button mnemonicParsing="false" onAction="#setOutputPath">
+               <graphic>
+                  <ImageView fitHeight="30.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../icon/folder.png" />
+                     </image>
+                  </ImageView>
+               </graphic></Button>
          </children>
       </HBox>
       <Separator prefWidth="200.0" />
@@ -67,7 +81,14 @@
       </VBox>
       <AnchorPane prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
          <children>
-            <Button defaultButton="true" mnemonicParsing="false" onAction="#runApplication" prefWidth="115.0" text="Run" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+            <Button contentDisplay="RIGHT" defaultButton="true" graphicTextGap="10.0" mnemonicParsing="false" onAction="#runApplication" prefWidth="115.0" text="Run" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0">
+               <graphic>
+                  <ImageView fitHeight="150.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../icon/startup.png" />
+                     </image>
+                  </ImageView>
+               </graphic></Button>
          </children>
       </AnchorPane>
    </children>

@@ -38,7 +38,6 @@ public class MainController implements Initializable {
     @FXML
     private CheckBox protectionCustomSetting;
 
-
     @FXML
     private ChoiceBox<String> operationsChoiceBox;
 
