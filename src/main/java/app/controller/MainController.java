@@ -15,7 +15,9 @@ import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
+import java.awt.*;
 import java.io.File;
+import java.net.URI;
 import java.net.URL;
 import java.util.LinkedHashMap;
 import java.util.ResourceBundle;
@@ -86,6 +88,29 @@ public class MainController implements Initializable {
         if (file != null) {
             outputPathTextField.setText(file.getAbsolutePath());
         }
+    }
+
+    @FXML
+    private void openSite() {
+        if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
+            try {
+                Desktop.getDesktop().browse(new URI("http://www.unsl.edu.ar/"));
+            } catch (Exception ignored) {
+            }
+        }
+    }
+
+    @FXML
+    private void displayAbout() {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("About");
+        alert.setHeaderText("Information Theory App");
+        alert.setContentText(
+                "Cross-platform Desktop App for data Protection and Compression using Hamming's and Huffman's algorithms\n\n" +
+                        "Built using Java 8 and JavaFX\n\n" +
+                        "2019 - UNSL - Argentina"
+        );
+        alert.showAndWait();
     }
 
     private void setOperations() {
