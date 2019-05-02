@@ -2,4 +2,3 @@ rootProject.name = 'InformationTheory'
 include ":HammingECC", ":HuffmanCompression"
 project(":HammingECC").projectDir = file("./HammingECC")
 project(":HuffmanCompression").projectDir = file("./HuffmanCompression")
-

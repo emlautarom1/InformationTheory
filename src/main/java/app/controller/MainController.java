@@ -7,6 +7,7 @@ import app.service.TaskManager;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
@@ -164,11 +165,20 @@ public class MainController implements Initializable {
     }
 
     private void displaySucces(long elapsedTime) {
-        System.out.println("Operation(s) finished successfully in " + elapsedTime + " ms");
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Succes");
+        alert.setHeaderText(null);
+        alert.setContentText(
+                "Operation(s) finished successfully in " + elapsedTime + " ms"
+        );
+        alert.showAndWait();
     }
 
     private void displayError(Error error) {
-        System.out.println("Error found!: ");
-        System.out.println(error.getMessage());
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Error");
+        alert.setHeaderText("Ooops, something went wrong!");
+        alert.setContentText(error.getMessage());
+        alert.showAndWait();
     }
 }
