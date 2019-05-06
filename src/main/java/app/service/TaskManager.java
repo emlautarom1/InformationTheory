@@ -76,7 +76,7 @@ public class TaskManager {
         BitSet dataBits = BitSet.valueOf(dataBytes);
         BitSet outputBits = Encoder.encode(dataBits, protectionLevel);
         if (customSetting == ProtectionCustomSetting.ADD_RANDOM_ERROR) {
-            Intoxicator.flipRandomBit(outputBits);
+            Intoxicator.flipRandomBitsInChunks(outputBits, protectionLevel);
         }
         return outputBits.toByteArray();
     }
