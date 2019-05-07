@@ -16,13 +16,15 @@ import java.util.BitSet;
 
 public class TaskManager {
     public static long runApplicationWithSettings(ApplicationExecutionSettings settings) throws Error {
-        validatePath(settings.getSourcePath(), "Invalid Source Path");
-        validatePath(settings.getOutputPath(), "Invalid Output Path");
+        String sourcePath = settings.getSourcePath();
+        String outputPath = buildOutputPath(settings);
+        validatePath(sourcePath, "Invalid Source Path");
+        validatePath(outputPath, "Invalid Output Path");
 
         long startTime = System.nanoTime();
 
         Indexer.buildIndices(); // TODO: This should be done automatically
-        File sourceFile = new File(settings.getSourcePath());
+        File sourceFile = new File(sourcePath);
         byte[] dataBytes;
         try {
             dataBytes = Files.readAllBytes(sourceFile.toPath());
@@ -64,13 +66,16 @@ public class TaskManager {
                 break;
         }
         try {
-            Files.write(new File(settings.getOutputPath()).toPath(), dataBytes);
+            Files.write(new File(outputPath).toPath(), dataBytes);
         } catch (Exception e) {
             throw new Error("Failed to write file.");
         }
         return ((System.nanoTime() - startTime) / 10000);
     }
 
+    private static String buildOutputPath(ApplicationExecutionSettings settings) {
+        return settings.getOutputPath() + "." + ExtensionBuilder.buildFrom(settings);
+    }
 
     private static byte[] protectData(byte[] dataBytes, int protectionLevel, ProtectionCustomSetting customSetting) {
         BitSet dataBits = BitSet.valueOf(dataBytes);
