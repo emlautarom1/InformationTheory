@@ -4,10 +4,13 @@ import app.model.ApplicationExecutionSettings;
 import app.model.Operations;
 import app.model.ProtectionCustomSetting;
 import app.service.TaskManager;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Cursor;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
@@ -21,6 +24,7 @@ import java.net.URI;
 import java.net.URL;
 import java.util.LinkedHashMap;
 import java.util.ResourceBundle;
+import java.util.concurrent.CompletableFuture;
 
 public class MainController implements Initializable {
     private LinkedHashMap<String, Integer> protectionLevelsOptions;
@@ -32,7 +36,6 @@ public class MainController implements Initializable {
 
     @FXML
     private TextField outputPathTextField;
-
 
     @FXML
     private ChoiceBox<String> protectionLevelsChoiceBox;
@@ -46,6 +49,9 @@ public class MainController implements Initializable {
     @FXML
     private VBox protectionAdvancedSettingsContainer;
 
+    @FXML
+    private Button runButton;
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         setOperations();
@@ -55,19 +61,8 @@ public class MainController implements Initializable {
 
     @FXML
     private void runApplication() {
-        ApplicationExecutionSettings settings = new ApplicationExecutionSettings(
-                sourcePathTextField.getText(),
-                outputPathTextField.getText(),
-                getOperations(),
-                getProtectionLevel(),
-                getProtectionCustomSetting()
-        );
-        try {
-            long elapsedTime = TaskManager.runApplicationWithSettings(settings);
-            displaySucces(elapsedTime);
-        } catch (Error error) {
-            displayError(error);
-        }
+        ApplicationExecutionSettings settings = getApplicationExecutionSettings();
+        runApplicationAsync(settings);
     }
 
     @FXML
@@ -111,6 +106,38 @@ public class MainController implements Initializable {
                         "2019 - UNSL - Argentina"
         );
         alert.showAndWait();
+    }
+
+    private void runApplicationAsync(ApplicationExecutionSettings settings) {
+        // Change the UI to reflect that the app is running
+        this.runButton.setDisable(true);
+        this.runButton.getScene().setCursor(Cursor.WAIT);
+        // Run tasks asynchronously
+        CompletableFuture
+                .supplyAsync(() -> TaskManager.runApplicationWithSettings(settings))
+                .handle((elapsedTime, error) -> {
+                    if (error == null) {
+                        Platform.runLater(() -> displaySucces(elapsedTime));
+                    } else {
+                        Platform.runLater(() -> displayError(error.getCause().getMessage()));
+                    }
+                    // Restore the UI
+                    Platform.runLater(() -> {
+                        this.runButton.setDisable(false);
+                        this.runButton.getScene().setCursor(Cursor.DEFAULT);
+                    });
+                    return null;
+                });
+    }
+
+    private ApplicationExecutionSettings getApplicationExecutionSettings() {
+        return new ApplicationExecutionSettings(
+                sourcePathTextField.getText(),
+                outputPathTextField.getText(),
+                getOperations(),
+                getProtectionLevel(),
+                getProtectionCustomSetting()
+        );
     }
 
     private void setOperations() {
@@ -198,11 +225,11 @@ public class MainController implements Initializable {
         alert.showAndWait();
     }
 
-    private void displayError(Error error) {
+    private void displayError(String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Error");
         alert.setHeaderText("Ooops, something went wrong!");
-        alert.setContentText(error.getMessage());
+        alert.setContentText(message);
         alert.showAndWait();
     }
 }

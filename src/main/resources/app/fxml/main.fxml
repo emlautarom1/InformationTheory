@@ -14,18 +14,16 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="600.0" spacing="20.0"
-      xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="app.controller.MainController">
+<VBox minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="600.0" spacing="20.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.controller.MainController">
     <padding>
-        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
+        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
     </padding>
     <AnchorPane VBox.vgrow="NEVER">
         <padding>
-            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
         </padding>
         <VBox.margin>
-            <Insets/>
+            <Insets />
         </VBox.margin>
         <Button contentDisplay="RIGHT" layoutX="475.0" layoutY="22.0" mnemonicParsing="false"
                 onAction="#displayAbout" prefWidth="115.0" text="About" AnchorPane.rightAnchor="0.0"/>
@@ -33,54 +31,52 @@
                    preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
                    AnchorPane.topAnchor="0.0">
             <cursor>
-                <Cursor fx:constant="HAND"/>
+                <Cursor fx:constant="HAND" />
             </cursor>
-            <Image url="@../img/unsl_logo.png"/>
+            <Image url="@../img/unsl_logo.png" />
         </ImageView>
     </AnchorPane>
-    <Separator prefWidth="200.0"/>
+    <Separator prefWidth="200.0" />
     <HBox spacing="20.0" VBox.vgrow="NEVER">
-        <Label minWidth="-Infinity" prefWidth="80.0" text="Source File:"/>
-        <TextField fx:id="sourcePathTextField" maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS"/>
+        <Label minWidth="-Infinity" prefWidth="80.0" text="Source File:" />
+        <TextField fx:id="sourcePathTextField" maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS" />
         <Button mnemonicParsing="false" onAction="#setSourcePath">
             <graphic>
                 <ImageView fitHeight="30.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
-                    <Image url="@../icon/folder.png"/>
+                    <Image url="@../icon/folder.png" />
                 </ImageView>
             </graphic>
         </Button>
     </HBox>
     <HBox layoutX="20.0" layoutY="132.0" spacing="20.0">
-        <Label minWidth="-Infinity" prefWidth="80.0" text="Output File:"/>
-        <TextField fx:id="outputPathTextField" maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS"/>
+        <Label minWidth="-Infinity" prefWidth="80.0" text="Output File:" />
+        <TextField fx:id="outputPathTextField" maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS" />
         <Button mnemonicParsing="false" onAction="#setOutputPath">
             <graphic>
                 <ImageView fitHeight="30.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
-                    <Image url="@../icon/folder.png"/>
+                    <Image url="@../icon/folder.png" />
                 </ImageView>
             </graphic>
         </Button>
     </HBox>
-    <Separator prefWidth="200.0"/>
+    <Separator prefWidth="200.0" />
     <HBox alignment="CENTER_LEFT" spacing="50.0" VBox.vgrow="NEVER">
-        <Label text="Operation(s):"/>
-        <ChoiceBox fx:id="operationsChoiceBox" prefWidth="150.0"/>
+        <Label text="Operation(s):" />
+        <ChoiceBox fx:id="operationsChoiceBox" prefWidth="150.0" />
     </HBox>
-    <Separator layoutX="20.0" layoutY="222.0" prefWidth="200.0"/>
+    <Separator layoutX="20.0" layoutY="222.0" prefWidth="200.0" />
     <VBox fx:id="protectionAdvancedSettingsContainer" spacing="20.0">
-        <Label text="Protection Advanced Settings:"/>
+        <Label text="Protection Advanced Settings:" />
         <HBox alignment="CENTER_LEFT" spacing="50.0">
-            <ChoiceBox fx:id="protectionLevelsChoiceBox" prefWidth="150.0"/>
-            <CheckBox fx:id="protectionCustomSetting" mnemonicParsing="false" text="CustomSetting"/>
+            <ChoiceBox fx:id="protectionLevelsChoiceBox" prefWidth="150.0" />
+            <CheckBox fx:id="protectionCustomSetting" mnemonicParsing="false" text="CustomSetting" />
         </HBox>
     </VBox>
     <AnchorPane prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
-        <Button contentDisplay="RIGHT" defaultButton="true" graphicTextGap="10.0" mnemonicParsing="false"
-                onAction="#runApplication" prefWidth="115.0" text="Run" AnchorPane.bottomAnchor="0.0"
-                AnchorPane.rightAnchor="0.0">
+        <Button fx:id="runButton" contentDisplay="RIGHT" defaultButton="true" graphicTextGap="10.0" mnemonicParsing="false" onAction="#runApplication" prefWidth="115.0" text="Run" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0">
             <graphic>
                 <ImageView fitHeight="150.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
-                    <Image url="@../icon/startup.png"/>
+                    <Image url="@../icon/startup.png" />
                 </ImageView>
             </graphic>
         </Button>
