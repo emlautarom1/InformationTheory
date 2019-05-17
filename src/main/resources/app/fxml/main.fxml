@@ -67,34 +67,26 @@
     <Separator layoutX="20.0" layoutY="222.0" prefWidth="200.0" />
    <Accordion VBox.vgrow="NEVER">
      <panes>
-       <TitledPane fx:id="protectionAdvancedSettingsContainer" animated="false" text="Protection Advanced Settings">
-            <content>
-                 <HBox alignment="CENTER_LEFT" spacing="50.0">
-                     <ChoiceBox fx:id="protectionLevelsChoiceBox" prefWidth="150.0" />
-                     <CheckBox fx:id="protectionCustomSetting" mnemonicParsing="false" text="CustomSetting" />
-                  <padding>
-                     <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-                  </padding>
-                 </HBox>
-            </content>
-       </TitledPane>
+         <TitledPane fx:id="protectionAdvancedSettingsContainer" animated="false" text="Protection Advanced Settings">
+             <HBox alignment="CENTER_LEFT" spacing="50.0">
+                 <ChoiceBox fx:id="protectionLevelsChoiceBox" prefWidth="150.0"/>
+                 <CheckBox fx:id="protectionCustomSetting" mnemonicParsing="false" text="CustomSetting"/>
+                 <padding>
+                 <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
+                 </padding>
+             </HBox>
+         </TitledPane>
          <TitledPane fx:id="timeLockContainer" animated="false" layoutX="10.0" layoutY="10.0" text="Time Lock">
-            <content>
-               <HBox alignment="CENTER_LEFT" spacing="50.0">
-                  <children>
-                     <CheckBox fx:id="timeLockCheckBox" mnemonicParsing="false" text="Enabled" />
-                     <HBox alignment="CENTER_LEFT" spacing="20.0">
-                        <children>
-                           <Label text="Unlock Date:" />
-                           <DatePicker fx:id="timeLockUnlockDate" />
-                        </children>
-                     </HBox>
-                  </children>
-                  <padding>
-                     <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-                  </padding>
-               </HBox>
-            </content>
+             <HBox alignment="CENTER_LEFT" spacing="50.0">
+                 <padding>
+                     <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
+                 </padding>
+                 <CheckBox fx:id="timeLockCheckBox" mnemonicParsing="false" text="Enabled"/>
+                 <HBox alignment="CENTER_LEFT" spacing="20.0">
+                     <Label text="Unlock Date:"/>
+                     <DatePicker fx:id="timeLockUnlockDate"/>
+                 </HBox>
+             </HBox>
          </TitledPane>
      </panes>
    </Accordion>
