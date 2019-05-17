@@ -2,6 +2,7 @@ package app.service;
 
 import app.model.ApplicationExecutionSettings;
 import app.model.ProtectionCustomSetting;
+import app.model.TimeLockSettings;
 import hamming.lib.Decoder;
 import hamming.lib.Encoder;
 import hamming.lib.services.Indexer;
@@ -16,6 +17,9 @@ import java.util.BitSet;
 
 public class TaskManager {
     public static long runApplicationWithSettings(ApplicationExecutionSettings settings) throws Error {
+        final TimeLockSettings timeLock = settings.getTimeLockSettings();
+
+
         String sourcePath = settings.getSourcePath();
         String outputPath = buildOutputPath(settings);
         validatePath(sourcePath, "Invalid Source Path");
@@ -37,25 +41,33 @@ public class TaskManager {
                         dataBytes,
                         settings.getProtectionLevel(),
                         settings.getProtectionCustomSetting());
+                if (timeLock.isEnabled()) {
+                    dataBytes = timeLockData(dataBytes);
+                }
                 break;
             case UNLOCK:
                 dataBytes = unlockData(
-                        dataBytes,
+                        timeUnlockData(dataBytes),
                         settings.getProtectionLevel(),
                         settings.getProtectionCustomSetting()
                 );
                 break;
             case COMPRESS:
-                dataBytes = compressData(dataBytes);
+                dataBytes = timeLockData(compressData(dataBytes));
                 break;
             case DECOMPRESS:
-                dataBytes = decompressData(dataBytes);
+                dataBytes = decompressData(
+                        timeUnlockData(dataBytes)
+                );
                 break;
             case PROTECT_AND_COMPRESS:
                 dataBytes = protectData(compressData(dataBytes),
                         settings.getProtectionLevel(),
                         settings.getProtectionCustomSetting()
                 );
+                if (timeLock.isEnabled()) {
+                    dataBytes = timeLockData(dataBytes);
+                }
                 break;
             case UNLOCK_AND_DECOMPRESS:
                 dataBytes = decompressData(unlockData(
@@ -75,6 +87,16 @@ public class TaskManager {
 
     private static String buildOutputPath(ApplicationExecutionSettings settings) {
         return settings.getOutputPath() + "." + ExtensionBuilder.buildFrom(settings);
+    }
+
+    private static byte[] timeLockData(byte[] dataBytes) {
+        // TODO: Implement!
+        return dataBytes;
+    }
+
+    private static byte[] timeUnlockData(byte[] dataBytes) throws Error {
+        // TODO: Implement!
+        return dataBytes;
     }
 
     private static byte[] protectData(byte[] dataBytes, int protectionLevel, ProtectionCustomSetting customSetting) {

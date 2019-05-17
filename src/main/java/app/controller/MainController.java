@@ -3,18 +3,16 @@ package app.controller;
 import app.model.ApplicationExecutionSettings;
 import app.model.Operations;
 import app.model.ProtectionCustomSetting;
+import app.model.TimeLockSettings;
 import app.service.TaskManager;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Cursor;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.VBox;
+import javafx.scene.control.*;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -22,6 +20,7 @@ import java.awt.*;
 import java.io.File;
 import java.net.URI;
 import java.net.URL;
+import java.time.LocalDate;
 import java.util.LinkedHashMap;
 import java.util.ResourceBundle;
 import java.util.concurrent.CompletableFuture;
@@ -47,7 +46,16 @@ public class MainController implements Initializable {
     private ChoiceBox<String> operationsChoiceBox;
 
     @FXML
-    private VBox protectionAdvancedSettingsContainer;
+    private TitledPane protectionAdvancedSettingsContainer;
+
+    @FXML
+    private TitledPane timeLockContainer;
+
+    @FXML
+    private CheckBox timeLockCheckBox;
+
+    @FXML
+    private DatePicker timeLockUnlockDate;
 
     @FXML
     private Button runButton;
@@ -136,7 +144,8 @@ public class MainController implements Initializable {
                 outputPathTextField.getText(),
                 getOperations(),
                 getProtectionLevel(),
-                getProtectionCustomSetting()
+                getProtectionCustomSetting(),
+                getTimeLockSettings()
         );
     }
 
@@ -159,17 +168,23 @@ public class MainController implements Initializable {
                     switch (op) {
                         case PROTECT:
                         case PROTECT_AND_COMPRESS:
-                            protectionAdvancedSettingsContainer.setVisible(true);
+                            timeLockContainer.setDisable(false);
+                            protectionAdvancedSettingsContainer.setDisable(false);
                             protectionCustomSetting.setText(protectionAddRandomError);
                             break;
                         case UNLOCK:
                         case UNLOCK_AND_DECOMPRESS:
-                            protectionAdvancedSettingsContainer.setVisible(true);
+                            timeLockContainer.setDisable(true);
+                            protectionAdvancedSettingsContainer.setDisable(false);
                             protectionCustomSetting.setText(protectionCorrectErrors);
                             break;
                         case COMPRESS:
+                            timeLockContainer.setDisable(false);
+                            protectionAdvancedSettingsContainer.setDisable(true);
+                            break;
                         case DECOMPRESS:
-                            protectionAdvancedSettingsContainer.setVisible(false);
+                            timeLockContainer.setDisable(true);
+                            protectionAdvancedSettingsContainer.setDisable(true);
                             break;
                     }
                 }
@@ -213,6 +228,13 @@ public class MainController implements Initializable {
         } else {
             return ProtectionCustomSetting.NOTHING;
         }
+    }
+
+    private TimeLockSettings getTimeLockSettings() {
+        return new TimeLockSettings(
+                timeLockCheckBox.isSelected(),
+                timeLockUnlockDate.getValue()
+        );
     }
 
     private void displaySucces(long elapsedTime) {

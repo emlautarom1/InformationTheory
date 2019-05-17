@@ -6,18 +6,21 @@ public class ApplicationExecutionSettings {
     private final Operations operations;
     private final int protectionLevel;
     private final ProtectionCustomSetting protectionCustomSetting;
+    private final TimeLockSettings timeLockSettings;
 
     public ApplicationExecutionSettings(String sourcePath,
                                         String outputPath,
                                         Operations operations,
                                         int protectionLevel,
-                                        ProtectionCustomSetting protectionCustomSetting) {
+                                        ProtectionCustomSetting protectionCustomSetting,
+                                        TimeLockSettings timeLockSettings) {
 
         this.sourcePath = sourcePath;
         this.outputPath = outputPath;
         this.operations = operations;
         this.protectionLevel = protectionLevel;
         this.protectionCustomSetting = protectionCustomSetting;
+        this.timeLockSettings = timeLockSettings;
     }
 
     public String getOutputPath() {
@@ -38,5 +41,9 @@ public class ApplicationExecutionSettings {
 
     public Operations getOperations() {
         return operations;
+    }
+
+    public TimeLockSettings getTimeLockSettings() {
+        return timeLockSettings;
     }
 }

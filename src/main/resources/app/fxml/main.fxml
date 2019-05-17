@@ -2,12 +2,15 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Accordion?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.TitledPane?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -25,11 +28,8 @@
         <VBox.margin>
             <Insets />
         </VBox.margin>
-        <Button contentDisplay="RIGHT" layoutX="475.0" layoutY="22.0" mnemonicParsing="false"
-                onAction="#displayAbout" prefWidth="115.0" text="About" AnchorPane.rightAnchor="0.0"/>
-        <ImageView fitHeight="150.0" fitWidth="200.0" onMouseClicked="#openSite" pickOnBounds="true"
-                   preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
-                   AnchorPane.topAnchor="0.0">
+        <Button contentDisplay="RIGHT" layoutX="475.0" layoutY="22.0" mnemonicParsing="false" onAction="#displayAbout" prefWidth="115.0" text="About" AnchorPane.rightAnchor="0.0" />
+        <ImageView fitHeight="150.0" fitWidth="200.0" onMouseClicked="#openSite" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
             <cursor>
                 <Cursor fx:constant="HAND" />
             </cursor>
@@ -65,13 +65,39 @@
         <ChoiceBox fx:id="operationsChoiceBox" prefWidth="150.0" />
     </HBox>
     <Separator layoutX="20.0" layoutY="222.0" prefWidth="200.0" />
-    <VBox fx:id="protectionAdvancedSettingsContainer" spacing="20.0">
-        <Label text="Protection Advanced Settings:" />
-        <HBox alignment="CENTER_LEFT" spacing="50.0">
-            <ChoiceBox fx:id="protectionLevelsChoiceBox" prefWidth="150.0" />
-            <CheckBox fx:id="protectionCustomSetting" mnemonicParsing="false" text="CustomSetting" />
-        </HBox>
-    </VBox>
+   <Accordion VBox.vgrow="NEVER">
+     <panes>
+       <TitledPane fx:id="protectionAdvancedSettingsContainer" animated="false" text="Protection Advanced Settings">
+            <content>
+                 <HBox alignment="CENTER_LEFT" spacing="50.0">
+                     <ChoiceBox fx:id="protectionLevelsChoiceBox" prefWidth="150.0" />
+                     <CheckBox fx:id="protectionCustomSetting" mnemonicParsing="false" text="CustomSetting" />
+                  <padding>
+                     <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                  </padding>
+                 </HBox>
+            </content>
+       </TitledPane>
+         <TitledPane fx:id="timeLockContainer" animated="false" layoutX="10.0" layoutY="10.0" text="Time Lock">
+            <content>
+               <HBox alignment="CENTER_LEFT" spacing="50.0">
+                  <children>
+                     <CheckBox fx:id="timeLockCheckBox" mnemonicParsing="false" text="Enabled" />
+                     <HBox alignment="CENTER_LEFT" spacing="20.0">
+                        <children>
+                           <Label text="Unlock Date:" />
+                           <DatePicker fx:id="timeLockUnlockDate" />
+                        </children>
+                     </HBox>
+                  </children>
+                  <padding>
+                     <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                  </padding>
+               </HBox>
+            </content>
+         </TitledPane>
+     </panes>
+   </Accordion>
     <AnchorPane prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
         <Button fx:id="runButton" contentDisplay="RIGHT" defaultButton="true" graphicTextGap="10.0" mnemonicParsing="false" onAction="#runApplication" prefWidth="115.0" text="Run" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0">
             <graphic>
