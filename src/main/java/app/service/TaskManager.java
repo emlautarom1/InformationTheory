@@ -3,6 +3,7 @@ package app.service;
 import app.model.ApplicationExecutionSettings;
 import app.model.ProtectionCustomSetting;
 import app.model.TimeLockSettings;
+import app.service.timelocker.TimeLocker;
 import hamming.lib.Decoder;
 import hamming.lib.Encoder;
 import hamming.lib.services.Indexer;
@@ -17,9 +18,6 @@ import java.util.BitSet;
 
 public class TaskManager {
     public static long runApplicationWithSettings(ApplicationExecutionSettings settings) throws Error {
-        final TimeLockSettings timeLock = settings.getTimeLockSettings();
-
-
         String sourcePath = settings.getSourcePath();
         String outputPath = buildOutputPath(settings);
         validatePath(sourcePath, "Invalid Source Path");
@@ -35,6 +33,8 @@ public class TaskManager {
         } catch (Exception e) {
             throw new Error("Failed to read file.");
         }
+
+        final TimeLockSettings timeLock = settings.getTimeLockSettings();
         switch (settings.getOperations()) {
             case PROTECT:
                 dataBytes = protectData(
@@ -90,13 +90,11 @@ public class TaskManager {
     }
 
     private static byte[] timeLockData(byte[] dataBytes) {
-        // TODO: Implement!
-        return dataBytes;
+        return TimeLocker.lock(dataBytes);
     }
 
     private static byte[] timeUnlockData(byte[] dataBytes) throws Error {
-        // TODO: Implement!
-        return dataBytes;
+        return TimeLocker.unlock(dataBytes);
     }
 
     private static byte[] protectData(byte[] dataBytes, int protectionLevel, ProtectionCustomSetting customSetting) {
