@@ -1,4 +1,4 @@
-package app.service.timelocker;
+package app.service.timelock;
 
 public class TimeLocker {
     public static byte[] unlock(byte[] dataBytes) throws Error {

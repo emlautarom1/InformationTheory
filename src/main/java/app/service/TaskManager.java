@@ -3,7 +3,7 @@ package app.service;
 import app.model.ApplicationExecutionSettings;
 import app.model.ProtectionCustomSetting;
 import app.model.TimeLockSettings;
-import app.service.timelocker.TimeLocker;
+import app.service.timelock.TimeLocker;
 import hamming.lib.Decoder;
 import hamming.lib.Encoder;
 import hamming.lib.services.Indexer;

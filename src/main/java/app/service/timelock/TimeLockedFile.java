@@ -1,4 +1,4 @@
-package app.service.timelocker;
+package app.service.timelock;
 
 import java.time.LocalDate;
 
