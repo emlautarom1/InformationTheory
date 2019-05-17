@@ -1,21 +1,43 @@
 package app.service.timelock;
 
+import java.io.*;
 import java.time.LocalDate;
 
-class TimeLockedFile {
+class TimeLockedFile implements Serializable {
     private final boolean locked;
     private final LocalDate unlockDate;
+    private final byte[] data;
 
-    public TimeLockedFile(boolean locked, LocalDate unlockDate) {
+    TimeLockedFile(boolean locked, LocalDate unlockDate, byte[] data) {
         this.locked = locked;
         this.unlockDate = unlockDate;
+        this.data = data;
     }
 
-    public boolean isLocked() {
+    boolean isLocked() {
         return locked;
     }
 
-    public LocalDate getUnlockDate() {
+    LocalDate getUnlockDate() {
         return unlockDate;
+    }
+
+    byte[] getData() {
+        return data;
+    }
+
+    byte[] toByteArray() throws Exception {
+        ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+        ObjectOutputStream objectStream = new ObjectOutputStream(byteStream);
+        objectStream.writeObject(this);
+        objectStream.flush();
+        objectStream.close();
+        return byteStream.toByteArray();
+    }
+
+    static TimeLockedFile fromByteArray(byte[] source) throws Exception {
+        ByteArrayInputStream byteStream = new ByteArrayInputStream(source);
+        ObjectInputStream objectStream = new ObjectInputStream(byteStream);
+        return (TimeLockedFile) objectStream.readObject();
     }
 }

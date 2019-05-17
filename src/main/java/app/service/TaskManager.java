@@ -33,17 +33,16 @@ public class TaskManager {
         } catch (Exception e) {
             throw new Error("Failed to read file.");
         }
-
-        final TimeLockSettings timeLock = settings.getTimeLockSettings();
         switch (settings.getOperations()) {
             case PROTECT:
-                dataBytes = protectData(
-                        dataBytes,
-                        settings.getProtectionLevel(),
-                        settings.getProtectionCustomSetting());
-                if (timeLock.isEnabled()) {
-                    dataBytes = timeLockData(dataBytes);
-                }
+                dataBytes = timeLockData(
+                        protectData(
+                                dataBytes,
+                                settings.getProtectionLevel(),
+                                settings.getProtectionCustomSetting()
+                        ),
+                        settings.getTimeLockSettings()
+                );
                 break;
             case UNLOCK:
                 dataBytes = unlockData(
@@ -53,7 +52,10 @@ public class TaskManager {
                 );
                 break;
             case COMPRESS:
-                dataBytes = timeLockData(compressData(dataBytes));
+                dataBytes = timeLockData(
+                        compressData(dataBytes),
+                        settings.getTimeLockSettings()
+                );
                 break;
             case DECOMPRESS:
                 dataBytes = decompressData(
@@ -61,20 +63,22 @@ public class TaskManager {
                 );
                 break;
             case PROTECT_AND_COMPRESS:
-                dataBytes = protectData(compressData(dataBytes),
-                        settings.getProtectionLevel(),
-                        settings.getProtectionCustomSetting()
+                dataBytes = timeLockData(
+                        protectData(
+                                compressData(dataBytes),
+                                settings.getProtectionLevel(),
+                                settings.getProtectionCustomSetting()
+                        ),
+                        settings.getTimeLockSettings()
                 );
-                if (timeLock.isEnabled()) {
-                    dataBytes = timeLockData(dataBytes);
-                }
                 break;
             case UNLOCK_AND_DECOMPRESS:
-                dataBytes = decompressData(unlockData(
-                        dataBytes,
-                        settings.getProtectionLevel(),
-                        settings.getProtectionCustomSetting()
-                ));
+                dataBytes = decompressData(
+                        unlockData(
+                                timeUnlockData(dataBytes),
+                                settings.getProtectionLevel(),
+                                settings.getProtectionCustomSetting()
+                        ));
                 break;
         }
         try {
@@ -89,8 +93,16 @@ public class TaskManager {
         return settings.getOutputPath() + "." + ExtensionBuilder.buildFrom(settings);
     }
 
-    private static byte[] timeLockData(byte[] dataBytes) {
-        return TimeLocker.lock(dataBytes);
+    private static byte[] timeLockData(byte[] dataBytes, TimeLockSettings timeLockSettings) throws Error {
+        if (timeLockSettings.isEnabled()) {
+            if (timeLockSettings.getUnlockDate() != null) {
+                return TimeLocker.lock(dataBytes, timeLockSettings.getUnlockDate());
+            } else {
+                throw new Error("A Lock Date must be specified.");
+            }
+        } else {
+            return TimeLocker.buildUnlockedFile(dataBytes);
+        }
     }
 
     private static byte[] timeUnlockData(byte[] dataBytes) throws Error {
