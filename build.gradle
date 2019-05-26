@@ -1,7 +1,6 @@
 plugins {
     id 'java'
     id 'application'
-    id 'org.openjfx.javafxplugin' version '0.0.7'
 }
 
 group 'com.solutions.lautaroem1'
@@ -17,12 +16,6 @@ dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
     compile project(":HammingECC")
     compile project(":HuffmanCompression")
-}
-
-
-javafx {
-    version = "11.0.1"
-    modules = [ 'javafx.controls', 'javafx.fxml']
 }
 
 mainClassName = "app.Main"
