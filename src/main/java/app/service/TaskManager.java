@@ -4,9 +4,7 @@ import app.model.ApplicationExecutionSettings;
 import app.model.ProtectionCustomSetting;
 import app.model.TimeLockSettings;
 import app.service.timelock.TimeLocker;
-import hamming.lib.Decoder;
-import hamming.lib.Encoder;
-import hamming.lib.services.Indexer;
+import hamming.lib.Hamming;
 import hamming.lib.services.Intoxicator;
 import huffman.lib.Compressor;
 import huffman.lib.Decompressor;
@@ -25,7 +23,6 @@ public class TaskManager {
 
         long startTime = System.nanoTime();
 
-        Indexer.buildIndices(); // TODO: This should be done automatically
         File sourceFile = new File(sourcePath);
         byte[] dataBytes;
         try {
@@ -110,8 +107,9 @@ public class TaskManager {
     }
 
     private static byte[] protectData(byte[] dataBytes, int protectionLevel, ProtectionCustomSetting customSetting) {
+        Hamming hammingUtility = new Hamming(protectionLevel);
         BitSet dataBits = BitSet.valueOf(dataBytes);
-        BitSet outputBits = Encoder.encode(dataBits, protectionLevel);
+        BitSet outputBits = hammingUtility.encode(dataBits);
         if (customSetting == ProtectionCustomSetting.ADD_RANDOM_ERROR) {
             Intoxicator.flipRandomBitsInChunks(outputBits, protectionLevel);
         }
@@ -119,9 +117,10 @@ public class TaskManager {
     }
 
     private static byte[] unlockData(byte[] dataBytes, int protectionLevel, ProtectionCustomSetting customSetting) {
+        Hamming hammingUtility = new Hamming(protectionLevel);
         BitSet dataBits = BitSet.valueOf(dataBytes);
         boolean correct = customSetting == ProtectionCustomSetting.CORRECT_ERRORS;
-        BitSet outputBits = Decoder.decode(dataBits, protectionLevel, correct);
+        BitSet outputBits = hammingUtility.decode(dataBits, correct);
         return outputBits.toByteArray();
     }
 
