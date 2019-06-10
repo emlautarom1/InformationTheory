@@ -83,7 +83,7 @@ public class TaskManager {
         } catch (Exception e) {
             throw new Error("Failed to write file.");
         }
-        return ((System.nanoTime() - startTime) / 10000);
+        return ((System.nanoTime() - startTime) / 1000000);
     }
 
     private static String buildOutputPath(ApplicationExecutionSettings settings) {
