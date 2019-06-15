@@ -4,7 +4,7 @@ import java.time.LocalDate;
 
 public class TimeLocker {
     public static byte[] lock(byte[] dataBytes, LocalDate lockDate) {
-        if (LocalDate.now().isBefore(lockDate)) {
+        if (isValidLockDate(lockDate)) {
             TimeLockedFile lockedFile = new TimeLockedFile(
                     true,
                     lockDate,
@@ -26,7 +26,6 @@ public class TimeLocker {
             if (timeLockedFile.isLocked()) {
                 LocalDate unlockDate = timeLockedFile.getUnlockDate();
                 if (LocalDate.now().isAfter(unlockDate)) {
-                    System.out.println("File was time unlocked.");
                     return timeLockedFile.getData();
                 } else {
                     throw new Error("File is Time Locked until " + unlockDate.toString() + "!.");
@@ -46,5 +45,9 @@ public class TimeLocker {
         } catch (Exception e) {
             throw new Error("Failed to Time Lock data.");
         }
+    }
+
+    private static boolean isValidLockDate(LocalDate lockDate) {
+        return LocalDate.now().isBefore(lockDate);
     }
 }
