@@ -16,10 +16,10 @@ import java.util.BitSet;
 
 public class TaskManager {
     public static long runApplicationWithSettings(ApplicationExecutionSettings settings) throws Error {
+        validatePath(settings.getSourcePath(), "Invalid Source Path");
+        validatePath(settings.getOutputPath(), "Invalid Output Path");
         String sourcePath = settings.getSourcePath();
         String outputPath = buildOutputPath(settings);
-        validatePath(sourcePath, "Invalid Source Path");
-        validatePath(outputPath, "Invalid Output Path");
 
         long startTime = System.nanoTime();
 
