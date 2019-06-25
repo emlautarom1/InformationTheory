@@ -1,12 +1,12 @@
 package app.model;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class TimeLockSettings {
     private final boolean enabled;
-    private final LocalDate unlockDate;
+    private final LocalDateTime unlockDate;
 
-    public TimeLockSettings(boolean enabled, LocalDate unlockDate) {
+    public TimeLockSettings(boolean enabled, LocalDateTime unlockDate) {
         this.enabled = enabled;
         this.unlockDate = unlockDate;
     }
@@ -15,7 +15,7 @@ public class TimeLockSettings {
         return enabled;
     }
 
-    public LocalDate getUnlockDate() {
+    public LocalDateTime getUnlockDate() {
         return unlockDate;
     }
 }

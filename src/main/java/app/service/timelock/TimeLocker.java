@@ -1,9 +1,12 @@
 package app.service.timelock;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class TimeLocker {
-    public static byte[] lock(byte[] dataBytes, LocalDate lockDate) {
+    private static final String DATE_FORMATTER = "dd/MM/yyyy HH:mm";
+
+    public static byte[] lock(byte[] dataBytes, LocalDateTime lockDate) {
         if (isValidLockDate(lockDate)) {
             TimeLockedFile lockedFile = new TimeLockedFile(
                     true,
@@ -16,7 +19,7 @@ public class TimeLocker {
                 throw new Error("Failed to Time Lock the File.");
             }
         } else {
-            throw new Error("Invalid Time Lock Date.");
+            throw new Error("Invalid Time Lock Date or Time.");
         }
     }
 
@@ -24,11 +27,13 @@ public class TimeLocker {
         try {
             TimeLockedFile timeLockedFile = TimeLockedFile.fromByteArray(dataBytes);
             if (timeLockedFile.isLocked()) {
-                LocalDate unlockDate = timeLockedFile.getUnlockDate();
-                if (LocalDate.now().isAfter(unlockDate)) {
+                LocalDateTime unlockDate = timeLockedFile.getUnlockDate();
+                if (LocalDateTime.now().isAfter(unlockDate)) {
                     return timeLockedFile.getData();
                 } else {
-                    throw new Error("File is Time Locked until " + unlockDate.toString() + "!.");
+                    throw new Error("File is Time Locked until "
+                            + unlockDate.format(DateTimeFormatter.ofPattern(DATE_FORMATTER))
+                            + "!");
                 }
             } else {
                 return timeLockedFile.getData();
@@ -47,7 +52,7 @@ public class TimeLocker {
         }
     }
 
-    private static boolean isValidLockDate(LocalDate lockDate) {
-        return LocalDate.now().isBefore(lockDate);
+    private static boolean isValidLockDate(LocalDateTime lockDate) {
+        return LocalDateTime.now().isBefore(lockDate);
     }
 }

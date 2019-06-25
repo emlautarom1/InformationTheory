@@ -5,6 +5,7 @@ import app.model.Operations;
 import app.model.ProtectionCustomSetting;
 import app.model.TimeLockSettings;
 import app.service.TaskManager;
+import app.time.converter.SafeLocalTimeStringConverter;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
@@ -20,6 +21,10 @@ import java.awt.*;
 import java.io.File;
 import java.net.URI;
 import java.net.URL;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.LinkedHashMap;
 import java.util.ResourceBundle;
 import java.util.concurrent.CompletableFuture;
@@ -57,6 +62,9 @@ public class MainController implements Initializable {
     private DatePicker timeLockUnlockDate;
 
     @FXML
+    private Spinner<LocalTime> timeLockUnlockTime;
+
+    @FXML
     private Button runButton;
 
     @Override
@@ -64,6 +72,7 @@ public class MainController implements Initializable {
         setOperations();
         setProtectionLevelOptions();
         setProtectionDefaultCustomSetting();
+        setTimePickerSettings();
     }
 
     @FXML
@@ -209,6 +218,46 @@ public class MainController implements Initializable {
         protectionCustomSetting.setText(protectionAddRandomError);
     }
 
+    private void setTimePickerSettings() {
+        SafeLocalTimeStringConverter safeConverter = new SafeLocalTimeStringConverter(
+                DateTimeFormatter.ofPattern("HH:mm"),
+                DateTimeFormatter.ofPattern("HH:mm")
+        );
+
+        timeLockUnlockTime.valueFactoryProperty().setValue(
+                new SpinnerValueFactory<LocalTime>() {
+                    {
+                        setConverter(safeConverter);
+                    }
+
+                    @Override
+                    public void decrement(int steps) {
+                        if (getValue() == null)
+                            setValue(LocalTime.now());
+                        else {
+                            LocalTime time = getValue();
+                            setValue(time.minusMinutes(steps));
+                        }
+                    }
+
+                    @Override
+                    public void increment(int steps) {
+                        if (this.getValue() == null)
+                            setValue(LocalTime.now());
+                        else {
+                            LocalTime time = getValue();
+                            setValue(time.plusMinutes(steps));
+                        }
+                    }
+                }
+        );
+        // Ensure the last "Time" in the spinner is a valid one.
+        timeLockUnlockTime.focusedProperty().addListener(observable -> {
+            String lastInput = timeLockUnlockTime.getEditor().getCharacters().toString();
+            timeLockUnlockTime.getValueFactory().setValue(safeConverter.fromString(lastInput));
+        });
+    }
+
     private Operations getOperations() {
         String selectedValue = operationsChoiceBox.getValue();
         return Operations.fromString(selectedValue);
@@ -230,9 +279,18 @@ public class MainController implements Initializable {
     }
 
     private TimeLockSettings getTimeLockSettings() {
+        LocalDateTime unlockDateTime = null;
+
+        LocalDate unlockDate = timeLockUnlockDate.getValue();
+        LocalTime unlockTime = timeLockUnlockTime.getValue();
+
+        if (unlockDate != null && unlockTime != null) {
+            unlockDateTime = LocalDateTime.of(unlockDate, unlockTime);
+        }
+
         return new TimeLockSettings(
                 timeLockCheckBox.isSelected(),
-                timeLockUnlockDate.getValue()
+                unlockDateTime
         );
     }
 

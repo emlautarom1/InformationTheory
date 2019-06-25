@@ -1,14 +1,14 @@
 package app.service.timelock;
 
 import java.io.*;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 class TimeLockedFile implements Serializable {
     private final boolean locked;
-    private final LocalDate unlockDate;
+    private final LocalDateTime unlockDate;
     private final byte[] data;
 
-    TimeLockedFile(boolean locked, LocalDate unlockDate, byte[] data) {
+    TimeLockedFile(boolean locked, LocalDateTime unlockDate, byte[] data) {
         this.locked = locked;
         this.unlockDate = unlockDate;
         this.data = data;
@@ -18,7 +18,7 @@ class TimeLockedFile implements Serializable {
         return locked;
     }
 
-    LocalDate getUnlockDate() {
+    LocalDateTime getUnlockDate() {
         return unlockDate;
     }
 
