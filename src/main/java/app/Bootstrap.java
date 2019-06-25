@@ -8,11 +8,11 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class App extends Application {
+public class Bootstrap extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("fxml/main.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("fxml/main.fxml"));
         Parent root = fxmlLoader.load();
         Scene scene = new Scene(root);
         stage.setTitle("Information Theory");
@@ -23,7 +23,9 @@ public class App extends Application {
         stage.show();
     }
 
-    public static void main(String[] args) {
-        launch();
+    @Override
+    public void init() throws Exception {
+        // Simulate application heavy lifting
+        Thread.sleep(3000);
     }
 }
