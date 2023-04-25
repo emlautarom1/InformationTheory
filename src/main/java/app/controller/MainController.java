@@ -5,7 +5,7 @@ import app.model.Operations;
 import app.model.ProtectionCustomSetting;
 import app.model.TimeLockSettings;
 import app.service.TaskManager;
-import app.time.converter.SafeLocalTimeStringConverter;
+import app.util.converter.SafeLocalTimeStringConverter;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
