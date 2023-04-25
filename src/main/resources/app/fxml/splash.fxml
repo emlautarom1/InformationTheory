@@ -40,7 +40,7 @@
          <font>
             <Font name="System Italic" size="12.0" />
          </font></Label>
-      <Label layoutX="493.0" layoutY="30.0" text="v1.0.5 | 2019" />
+      <Label layoutX="493.0" layoutY="30.0" text="v1.0.6 | 2019" />
       <Separator layoutX="200.0" layoutY="149.0" prefWidth="200.0" AnchorPane.leftAnchor="200.0" AnchorPane.rightAnchor="200.0" />
    </children>
 </AnchorPane>

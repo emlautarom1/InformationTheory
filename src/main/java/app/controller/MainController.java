@@ -14,6 +14,7 @@ import javafx.scene.Cursor;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.control.*;
+import javafx.scene.layout.Region;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -117,10 +118,11 @@ public class MainController implements Initializable {
         alert.setTitle("About");
         alert.setHeaderText("Information Theory App");
         alert.setContentText(
-                "Cross-platform Desktop App for data Protection and Compression using Hamming's and Huffman's algorithms\n\n" +
-                        "Built using Java 8 and JavaFX\n\n" +
-                        "2019 - UNSL - Argentina"
+                "Cross-platform Desktop App for data Protection and Compression using Hamming's and Huffman's algorithms\n\n"
+                        + "Built using Java 8 and JavaFX\n\n"
+                        + "2019 - UNSL - Argentina"
         );
+        alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
         alert.showAndWait();
     }
 
