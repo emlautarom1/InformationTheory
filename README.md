@@ -1,7 +1,5 @@
 # Information Theory
 
----
-
 Cross-platform Desktop App for data Protection and Compression using Hamming's and Huffman's algorithms.
 
 Tested on Windows 10 and Linux (Fedora 36).
