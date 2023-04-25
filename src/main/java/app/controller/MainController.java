@@ -133,7 +133,7 @@ public class MainController implements Initializable {
                 .supplyAsync(() -> TaskManager.runApplicationWithSettings(settings))
                 .handle((elapsedTime, error) -> {
                     if (error == null) {
-                        Platform.runLater(() -> displaySucces(elapsedTime));
+                        Platform.runLater(() -> displaySuccess(elapsedTime));
                     } else {
                         Platform.runLater(() -> displayError(error.getCause().getMessage()));
                     }
@@ -294,9 +294,9 @@ public class MainController implements Initializable {
         );
     }
 
-    private void displaySucces(long elapsedTime) {
+    private void displaySuccess(long elapsedTime) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Succes");
+        alert.setTitle("Success");
         alert.setHeaderText(null);
         alert.setContentText(
                 "Operation(s) finished successfully in " + elapsedTime + " ms"
@@ -307,7 +307,7 @@ public class MainController implements Initializable {
     private void displayError(String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Error");
-        alert.setHeaderText("Ooops, something went wrong!");
+        alert.setHeaderText("Whops, something went wrong!");
         alert.setContentText(message);
         alert.showAndWait();
     }
